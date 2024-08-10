@@ -21,13 +21,13 @@ public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
 
     public Category() {
     }
 
-    public Category(Long id, String name) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -56,5 +56,5 @@ public class Category implements Serializable {
             return false;
         return true;
     }
-
+    
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import tinario9954.gmail.com.crudTeste2.Models.Category;
 @Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
     
 }
