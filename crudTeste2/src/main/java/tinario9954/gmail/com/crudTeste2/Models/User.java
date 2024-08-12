@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -15,27 +19,36 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 @Entity
-@Table(name = "Categotias")
-public class Category implements Serializable {
+@Table(name = "Users")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    @Column(unique = true)
+    private String email;
+    private String password;
+    //Garatir que o usuario venha sempre como seu perfil
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="tb_user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Product> produtoes = new HashSet<>();
-
-    public Category() {
+    public User() {
     }
 
-    public Category(Integer id, String name) {
+    public User(Integer id, String firstName, String lastName, String email, String password) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     @Override
@@ -54,7 +67,7 @@ public class Category implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Category other = (Category) obj;
+        User other = (User) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

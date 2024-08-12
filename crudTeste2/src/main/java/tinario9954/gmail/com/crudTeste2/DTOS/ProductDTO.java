@@ -1,5 +1,6 @@
 package tinario9954.gmail.com.crudTeste2.DTOS;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import tinario9954.gmail.com.crudTeste2.Models.Product;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
     private String name;
