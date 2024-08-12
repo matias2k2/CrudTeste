@@ -6,7 +6,7 @@ import tinario9954.gmail.com.crudTeste2.Models.Category;
 
 @Getter
 @Setter
-public class categoryDTO {
+public class    categoryDTO {
 
     private Integer id;
     private String name;
@@ -15,7 +15,6 @@ public class categoryDTO {
     }
 
     public categoryDTO(Category entity) {
-        
         this.id = entity.getId();
         this.name = entity.getName();
     }

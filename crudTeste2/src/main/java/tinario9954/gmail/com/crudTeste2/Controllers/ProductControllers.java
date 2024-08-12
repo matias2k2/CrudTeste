@@ -1,7 +1,5 @@
 package tinario9954.gmail.com.crudTeste2.Controllers;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,51 +15,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tinario9954.gmail.com.crudTeste2.DTOS.categoryDTO;
-
-import tinario9954.gmail.com.crudTeste2.Services.CategoryService;
+import tinario9954.gmail.com.crudTeste2.DTOS.ProductDTO;
+import tinario9954.gmail.com.crudTeste2.Services.ProductService;
 
 @RestController
-@RequestMapping(value = "/categories")
-public class categoriControllers {
-
+@RequestMapping(value = "/Products")
+public class ProductControllers {
     @Autowired
-    private CategoryService _categoryService;
+    private ProductService _productService;
 
     @GetMapping
-    public ResponseEntity<Page<categoryDTO>> findAll(
-         @RequestParam(value = "page", defaultValue = "0") Integer page,
-         @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-         @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-         @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
-         
+    public ResponseEntity<Page<ProductDTO>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+
     ) {
         PageRequest _pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        Page<categoryDTO> lista = _categoryService.findAllPaged(_pageRequest); 
+        Page<ProductDTO> lista = _productService.findAllPaged(_pageRequest);
         return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<categoryDTO> findById(@PathVariable Integer id) {
-        categoryDTO resultado = _categoryService.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Integer id) {
+        ProductDTO resultado = _productService.findById(id);
         return ResponseEntity.ok().body(resultado);
     }
 
     @PostMapping
-    public ResponseEntity<categoryDTO> insert(@RequestBody categoryDTO entity) {
-        categoryDTO _entity = _categoryService.insert(entity);
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO entity) {
+        ProductDTO _entity = _productService.insert(entity);
         return ResponseEntity.ok().body(_entity);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<categoryDTO> update(@PathVariable Integer id, @RequestBody categoryDTO dto) {
-        categoryDTO _entity = _categoryService.update(dto, id);
+    public ResponseEntity<ProductDTO> update(@PathVariable Integer id, @RequestBody ProductDTO dto) {
+        ProductDTO _entity = _productService.update(dto, id);
         return ResponseEntity.ok().body(_entity);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<categoryDTO> delectar(@PathVariable Integer id) {
-        _categoryService.delectar(id);
+    public ResponseEntity<ProductDTO> delectar(@PathVariable Integer id) {
+        _productService.delectar(id);
         return ResponseEntity.noContent().build();
     }
 }

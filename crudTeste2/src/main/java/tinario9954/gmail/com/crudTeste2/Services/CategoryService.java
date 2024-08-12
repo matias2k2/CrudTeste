@@ -1,12 +1,12 @@
 package tinario9954.gmail.com.crudTeste2.Services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +21,10 @@ public class CategoryService {
     private CategoryRepository _categoryRepository;
 
     @Transactional
-    public List<categoryDTO> findAll() {
-        if (null == _categoryRepository) {
-            throw new IllegalStateException("CategoryRepository não foi injetado corretamente");
-        }
-        List<Category> resulte = _categoryRepository.findAll();
-        return resulte.stream().map(x -> new categoryDTO(x)).collect(Collectors.toList());
+    public Page<categoryDTO> findAllPaged(PageRequest pageRequest) {
+
+        Page<Category> resulte = _categoryRepository.findAll(pageRequest);
+        return resulte.map(x -> new categoryDTO(x));
     }
 
     // findById
