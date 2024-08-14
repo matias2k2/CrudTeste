@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import tinario9954.gmail.com.crudTeste2.DTOS.categoryDTO;
 
 import tinario9954.gmail.com.crudTeste2.Services.CategoryService;
@@ -48,7 +49,7 @@ public class categoriControllers {
     }
 
     @PostMapping
-    public ResponseEntity<categoryDTO> insert(@RequestBody categoryDTO entity) {
+    public ResponseEntity<categoryDTO> insert(@Valid @RequestBody categoryDTO entity) {
         categoryDTO _entity = _categoryService.insert(entity);
         return ResponseEntity.ok().body(_entity);
     }

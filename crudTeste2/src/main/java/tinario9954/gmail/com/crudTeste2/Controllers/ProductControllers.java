@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import tinario9954.gmail.com.crudTeste2.DTOS.ProductDTO;
 import tinario9954.gmail.com.crudTeste2.Services.ProductService;
 
@@ -44,13 +45,13 @@ public class ProductControllers {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO entity) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO entity) {
         ProductDTO _entity = _productService.insert(entity);
         return ResponseEntity.ok().body(_entity);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Integer id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> update(@PathVariable Integer id, @Valid @RequestBody ProductDTO dto) {
         ProductDTO _entity = _productService.update(dto, id);
         return ResponseEntity.ok().body(_entity);
     }

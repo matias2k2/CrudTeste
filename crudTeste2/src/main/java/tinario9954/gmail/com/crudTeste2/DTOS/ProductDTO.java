@@ -6,6 +6,9 @@ import java.util.List;
 
 import java.util.Set;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import tinario9954.gmail.com.crudTeste2.Models.Category;
@@ -18,8 +21,11 @@ public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+    @Size(min = 5,max = 60, message = "Deve ter entre 5 e 60 caracters ")
+    @NotBlank(message = "campo obrigatorio")
     private String name;
     private String description;
+    @Positive(message = "Preco deve ser um valor possitivo")
     private Double price;
     private String img;
 

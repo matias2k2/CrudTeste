@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
 import tinario9954.gmail.com.crudTeste2.DTOS.UserDTO;
 import tinario9954.gmail.com.crudTeste2.DTOS.UserInsertDTO;
 import tinario9954.gmail.com.crudTeste2.Services.UserService;
@@ -49,7 +50,7 @@ public class UserControllers {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO entity) {
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO entity) {
         UserDTO _entity = _userservices.insert(entity);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -59,7 +60,7 @@ public class UserControllers {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO dto) {
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @Valid @RequestBody UserDTO dto) {
         UserDTO _entity = _userservices.update(dto, id);
         return ResponseEntity.ok().body(_entity);
     }

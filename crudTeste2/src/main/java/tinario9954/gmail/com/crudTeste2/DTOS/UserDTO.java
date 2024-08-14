@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.Setter;
 import tinario9954.gmail.com.crudTeste2.Models.User;
@@ -14,8 +17,10 @@ public class UserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
+    @NotBlank(message = "campo obrigatorio")
     private String firstName;
     private String lastName;
+    @Email(message = "deve ser um emal valido")
     private String email;
     private String password;
 

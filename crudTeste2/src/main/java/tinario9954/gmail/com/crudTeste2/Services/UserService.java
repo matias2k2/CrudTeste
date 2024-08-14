@@ -2,11 +2,16 @@ package tinario9954.gmail.com.crudTeste2.Services;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +26,9 @@ import tinario9954.gmail.com.crudTeste2.Repository.RoleRepository;
 import tinario9954.gmail.com.crudTeste2.Repository.UserRepository;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
+
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -33,7 +40,7 @@ public class UserService {
     private RoleRepository _roleRepository;
 
     @Transactional
-    public Page<UserDTO> findAllPaged(PageRequest  pageRequest) {
+    public Page<UserDTO> findAllPaged(PageRequest pageRequest) {
 
         Page<User> resulte = _userRepository.findAll(pageRequest);
         return resulte.map(x -> new UserDTO(x));
@@ -93,5 +100,17 @@ public class UserService {
             Role roles = _roleRepository.getReferenceById(roleDTOS.getId());
             _entity.getRoles().add(roles);
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // TODO Auto-generated method stub
+        User users = _userRepository.findByEmail(username);
+        if (users == null) {
+            logger.error("User not found" + username);
+            throw new UsernameNotFoundException("Email not found");
+        }
+        logger.info("User found "+ username);
+        return users;
     }
 }
