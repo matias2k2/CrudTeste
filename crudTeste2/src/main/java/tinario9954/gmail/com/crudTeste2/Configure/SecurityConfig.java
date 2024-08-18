@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -23,19 +22,21 @@ public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder); // Configura a codificação da senha com BCrypt
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .anyRequest().permitAll() // Permite acesso a todas as URLs sem autenticação
-                .and()
-                .csrf().disable(); // Desativa o CSRF (opcional)
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/actuator/**").permitAll()
+                        .anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable())
+                .formLogin(formLogin -> formLogin.permitAll())
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }
